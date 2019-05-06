@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="css/owfont-regular.min.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<title>Weather Forecast</title>
+</head>
+<body>
+	<center><h1>Weather Forecast</h1></center>
+	<ul>
+		{{#summary}}
+		<li>
+			<center><h2>{{city}}, {{country}}</h2></center>
+			<div>
+				<div class="temp">
+					<h1>Day One</h1>
+					{{fahrenheitTemperature}}<sup>°F</sup>
+					{{celsiusTemperature}}<sup>°C</sup>
+				</div>
+				<div class="temp">
+					<h1>Day Two</h1>
+					{{fahrenheitTemperatureDayTwo}}<sup>°F</sup>
+					{{celsiusTemperatureDayTwo}}<sup>°C</sup>
+				</div>
+				<div class="temp">
+					<h1>Day Three</h1>
+					{{fahrenheitTemperatureDayThree}}<sup>°F</sup>
+					{{celsiusTemperatureDayThree}}<sup>°C</sup>
+				</div>
+				<div class="temp">
+					<h1>Day Four</h1>
+					{{fahrenheitTemperatureDayFour}}<sup>°F</sup>
+					{{celsiusTemperatureDayFour}}<sup>°C</sup>
+				</div>
+				<div class="temp">
+					<h1>Day Five</h1>
+					{{fahrenheitTemperatureDayFive}}<sup>°F</sup>
+					{{celsiusTemperatureDayFive}}<sup>°C</sup>
+				</div>
+			</div>
+			<div style="clear: both;"></div>
+		</li>
+		{{/summary}}
+	</ul>
+
+</body>
+</html>

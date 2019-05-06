@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 @Service
-@CacheConfig(cacheNames= {"weathers"})
 public class WeatherService {
 
 	private static final String WEATHER_URL =
@@ -34,12 +33,7 @@ public class WeatherService {
 
 	private final String apiKey;
 	
-	private List<WeatherForecast> weathers;
 	
-	public List<WeatherForecast> findForecasts() {
-		System.out.println(weathers);
-		return this.weathers;
-	}
 
 	public WeatherService(RestTemplateBuilder restTemplateBuilder,
 			WeatherAppProperties properties) {
@@ -47,7 +41,7 @@ public class WeatherService {
 		this.apiKey = properties.getApi().getKey();
 	}
 
-	@Cacheable
+	@Cacheable("weather")
 	public Weather getWeather(String country, String city) {
 		logger.info("Requesting current weather for {}/{}", country, city);
 		URI url = new UriTemplate(WEATHER_URL).expand(city, country, this.apiKey);

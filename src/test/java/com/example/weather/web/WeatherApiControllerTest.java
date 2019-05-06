@@ -6,6 +6,9 @@ import com.example.weather.integration.ows.Weather;
 import com.example.weather.integration.ows.WeatherEntry;
 import com.example.weather.integration.ows.WeatherForecast;
 import com.example.weather.integration.ows.WeatherService;
+import com.example.weather.repo.ForecastCache;
+import com.example.weather.repo.ForecastRepo;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,6 +31,8 @@ public class WeatherApiControllerTest {
 
 	@MockBean
 	private WeatherService weatherService;
+	@MockBean
+	private ForecastRepo repo;
 
 	@Autowired
 	private MockMvc mvc;
@@ -47,7 +52,7 @@ public class WeatherApiControllerTest {
 				.andExpect(jsonPath("$.timestamp", is("1970-01-01T00:20:34Z")));
 		verify(this.weatherService).getWeather("uk", "london");
 	}
-
+	
 	@Test
 	public void weatherForecast() throws Exception {
 		WeatherForecast forecast = new WeatherForecast();
@@ -78,6 +83,25 @@ public class WeatherApiControllerTest {
 		entry.setTimestamp(timestamp.getEpochSecond());
 	}
 	
-	
+
+
+	@Test
+	public void cacheWeatherForecast() throws Exception {
+		ForecastCache cacheForecast = this.repo.get("be", "brussels");
+		
+		given(cacheForecast).willReturn(null);
+		
+		WeatherForecast forecast = new WeatherForecast();
+		forecast.setName("Brussels");
+		forecast.getEntries().add(createWeatherEntry(285.45, 600, "02d", Instant.ofEpochSecond(1234)));
+		forecast.getEntries().add(createWeatherEntry(294.45, 800, "01d", Instant.ofEpochSecond(5678)));
+		
+		this.repo.save("be", "brussels", forecast);
+		
+		cacheForecast = this.repo.get("be", "brussels");
+
+		given(cacheForecast.getResult()).willReturn(forecast);
+		given(cacheForecast.getCacheTimestamp() == null).willReturn(false);
+	}
 
 }
